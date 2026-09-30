@@ -1,13 +1,14 @@
 const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
-// dotenv hanya untuk lokal - Vercel inject env vars otomatis
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({ override: true });
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.SUPABASE_ANON_KEY || 'placeholder-key';
+
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+  console.warn('⚠️ WARNING: SUPABASE_URL atau SUPABASE_ANON_KEY belum diset di Environment Variables!');
 }
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = supabase;
+
