@@ -1,0 +1,246 @@
+{
+  "info": {
+    "name": "Perpustakaan API",
+    "description": "Koleksi pengujian REST API untuk layanan pencatatan peminjaman buku perpustakaan",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "loan_id",
+      "value": "",
+      "type": "string",
+      "description": "Diisi otomatis setelah POST berhasil"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root - Info API",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": ["/"]
+        },
+        "description": "Cek apakah API berjalan dengan baik"
+      }
+    },
+    {
+      "name": "1. GET - Semua Peminjaman",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"]
+        },
+        "description": "Ambil semua data peminjaman tanpa filter"
+      }
+    },
+    {
+      "name": "2. GET - Filter Status Terlambat",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans?status=Terlambat",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"],
+          "query": [
+            { "key": "status", "value": "Terlambat" }
+          ]
+        },
+        "description": "Filter peminjaman yang terlambat"
+      }
+    },
+    {
+      "name": "3. GET - Filter Status Dipinjam",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans?status=Dipinjam",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"],
+          "query": [
+            { "key": "status", "value": "Dipinjam" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. GET - Filter Status Dikembalikan",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans?status=Dikembalikan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"],
+          "query": [
+            { "key": "status", "value": "Dikembalikan" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. GET - Filter by Anggota",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans?anggota_id=A001",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"],
+          "query": [
+            { "key": "anggota_id", "value": "A001" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. GET - Dengan Pagination",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans?page=1&limit=2",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "2" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. GET - Satu Peminjaman by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans/{{loan_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans", "{{loan_id}}"]
+        },
+        "description": "Isi variabel loan_id terlebih dahulu"
+      }
+    },
+    {
+      "name": "8. POST - Buat Peminjaman Baru",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.success && res.data && res.data.id) {",
+              "  pm.collectionVariables.set('loan_id', res.data.id);",
+              "  console.log('loan_id tersimpan:', res.data.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"anggota_id\": \"A001\",\n  \"buku_id\": \"B007\",\n  \"tanggal_pinjam\": \"2026-10-01\",\n  \"tanggal_kembali_rencana\": \"2026-10-15\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/loans",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"]
+        },
+        "description": "ID hasil POST otomatis tersimpan ke variabel loan_id"
+      }
+    },
+    {
+      "name": "9. POST - Validasi Gagal (field kosong)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"anggota_id\": \"A001\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/loans",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans"]
+        },
+        "description": "Harusnya return 400 dengan pesan error validasi"
+      }
+    },
+    {
+      "name": "10. PATCH - Update Status jadi Dikembalikan",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tanggal_kembali_aktual\": \"2026-10-14\",\n  \"status\": \"Dikembalikan\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/loans/{{loan_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans", "{{loan_id}}"]
+        }
+      }
+    },
+    {
+      "name": "11. PATCH - Update Status jadi Terlambat",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Terlambat\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/loans/{{loan_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans", "{{loan_id}}"]
+        }
+      }
+    },
+    {
+      "name": "12. DELETE - Hapus Peminjaman",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{base_url}}/api/loans/{{loan_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans", "{{loan_id}}"]
+        },
+        "description": "Hapus peminjaman dengan ID yang tersimpan di variabel"
+      }
+    },
+    {
+      "name": "13. GET - ID Tidak Ditemukan (404)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/loans/id-yang-tidak-ada",
+          "host": ["{{base_url}}"],
+          "path": ["api", "loans", "id-yang-tidak-ada"]
+        },
+        "description": "Harusnya return 404"
+      }
+    }
+  ]
+}
