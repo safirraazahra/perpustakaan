@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
     endpoints: {
       loans: '/api/loans',
     },
-    docs: 'https://github.com/your-username/perpustakaan-api#readme',
+    docs: 'https://github.com/safirraazahra/perpustakaan#readme',
   });
 });
 
