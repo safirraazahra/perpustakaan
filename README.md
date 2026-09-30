@@ -78,7 +78,7 @@ Ambil semua data peminjaman. Mendukung filter dan pagination.
 
 **Contoh Request:**
 ```
-GET /api/loans?status=Terlambat&page=1&limit=5
+GET /api/loans
 ```
 
 **Response (200 OK):**
@@ -88,21 +88,96 @@ GET /api/loans?status=Terlambat&page=1&limit=5
   "message": "Data peminjaman berhasil diambil",
   "data": [
     {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
-      "anggota_id": "A002",
+      "id": "27979644-bd58-4d6d-a2ec-4c8bfb141086",
+      "anggota_id": "A004",
+      "nama_anggota": "Lanjar Setiawan",
+      "buku_id": "B004",
+      "judul_buku": "Negeri 5 Menara",
+      "tanggal_pinjam": "2026-10-05",
+      "tanggal_kembali_rencana": "2026-10-19",
+      "tanggal_kembali_aktual": null,
+      "status": "Dipinjam",
+      "created_at": "2026-09-30T14:23:43.540436+00:00",
+      "updated_at": "2026-09-30T14:23:43.540436+00:00"
+    },
+    {
+      "id": "a833587f-9a22-470b-bcfc-1e4ebeaa7a39",
+      "anggota_id": "A003",
+      "nama_anggota": "Safira Zahra",
       "buku_id": "B003",
-      "tanggal_pinjam": "2026-09-10",
-      "tanggal_kembali_rencana": "2026-09-24",
+      "judul_buku": "Sang Pemimpi",
+      "tanggal_pinjam": "2026-09-01",
+      "tanggal_kembali_rencana": "2026-09-14",
+      "tanggal_kembali_aktual": null,
+      "status": "Dipinjam",
+      "created_at": "2026-09-30T14:23:31.183355+00:00",
+      "updated_at": "2026-09-30T14:23:31.183355+00:00"
+    },
+    {
+      "id": "e8e48eeb-3255-46c3-8eb6-d8c3dfcb9f48",
+      "anggota_id": "A002",
+      "nama_anggota": "Kiara Wulan",
+      "buku_id": "B002",
+      "judul_buku": "Bumi Manusia",
+      "tanggal_pinjam": "2026-10-02",
+      "tanggal_kembali_rencana": "2026-10-16",
+      "tanggal_kembali_aktual": null,
+      "status": "Dipinjam",
+      "created_at": "2026-09-30T14:23:15.216831+00:00",
+      "updated_at": "2026-09-30T14:23:15.216831+00:00"
+    },
+    {
+      "id": "a5565e6e-7f34-4c2f-abc7-ef5f1588e0a6",
+      "anggota_id": "A001",
+      "nama_anggota": "Ade Raihan Hanafi",
+      "buku_id": "B001",
+      "judul_buku": "Laskar Pelangi",
+      "tanggal_pinjam": "2026-10-01",
+      "tanggal_kembali_rencana": "2026-10-14",
+      "tanggal_kembali_aktual": null,
+      "status": "Dipinjam",
+      "created_at": "2026-09-30T14:22:45.351398+00:00",
+      "updated_at": "2026-09-30T14:22:45.351398+00:00"
+    }
+  ],
+  "pagination": {
+    "total": 7,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 1
+  }
+}
+```
+
+**Contoh Request dengan Filter:**
+```
+GET /api/loans?status=Terlambat
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Data peminjaman berhasil diambil",
+  "data": [
+    {
+      "id": "a833587f-9a22-470b-bcfc-1e4ebeaa7a39",
+      "anggota_id": "A003",
+      "nama_anggota": "Safira Zahra",
+      "buku_id": "B003",
+      "judul_buku": "Sang Pemimpi",
+      "tanggal_pinjam": "2026-09-01",
+      "tanggal_kembali_rencana": "2026-09-14",
       "tanggal_kembali_aktual": null,
       "status": "Terlambat",
-      "created_at": "2026-09-10T07:00:00.000Z",
-      "updated_at": "2026-09-10T07:00:00.000Z"
+      "created_at": "2026-09-30T14:23:31.183355+00:00",
+      "updated_at": "2026-09-30T14:44:13.156398+00:00"
     }
   ],
   "pagination": {
     "total": 1,
     "page": 1,
-    "limit": 5,
+    "limit": 10,
     "totalPages": 1
   }
 }
@@ -115,7 +190,7 @@ Ambil satu data peminjaman berdasarkan ID.
 
 **Contoh Request:**
 ```
-GET /api/loans/550e8400-e29b-41d4-a716-446655440000
+GET /api/loans/a833587f-9a22-470b-bcfc-1e4ebeaa7a39
 ```
 
 **Response (200 OK):**
@@ -154,8 +229,10 @@ Buat data peminjaman baru.
 ```json
 {
   "anggota_id": "A001",
+  "nama_anggota": "Myesha Azka Hafizha",
   "buku_id": "B007",
-  "tanggal_pinjam": "2026-10-01",
+  "judul_buku": "Mimpi Kunci",
+  "tanggal_pinjam": "2026-10-02",
   "tanggal_kembali_rencana": "2026-10-15"
 }
 ```
@@ -166,15 +243,17 @@ Buat data peminjaman baru.
   "success": true,
   "message": "Peminjaman berhasil dibuat",
   "data": {
-    "id": "new-uuid-here",
+    "id": "1481da06-993d-4e2a-8544-d27349055e43",
     "anggota_id": "A001",
+    "nama_anggota": "Myesha Azka Hafizha",
     "buku_id": "B007",
-    "tanggal_pinjam": "2026-10-01",
+    "judul_buku": "Mimpi Kunci",
+    "tanggal_pinjam": "2026-10-02",
     "tanggal_kembali_rencana": "2026-10-15",
     "tanggal_kembali_aktual": null,
     "status": "Dipinjam",
-    "created_at": "2026-10-01T08:00:00.000Z",
-    "updated_at": "2026-10-01T08:00:00.000Z"
+    "created_at": "2026-09-30T14:42:08.728866+00:00",
+    "updated_at": "2026-09-30T14:42:08.728866+00:00"
   }
 }
 ```
@@ -190,14 +269,18 @@ Buat data peminjaman baru.
 
 ---
 
-### PATCH /api/loans/:id
-Perbarui sebagian data peminjaman (semua field opsional).
+### PUT /api/loans/:id
+Perbarui sebagian data peminjaman (semua field opsional). Bisa menggunakan `PUT` atau `PATCH`.
+
+**Contoh Request:**
+```
+PUT /api/loans/a833587f-9a22-470b-bcfc-1e4ebeaa7a39
+```
 
 **Request Body:**
 ```json
 {
-  "tanggal_kembali_aktual": "2026-10-14",
-  "status": "Dikembalikan"
+  "status": "Terlambat"
 }
 ```
 
@@ -207,10 +290,17 @@ Perbarui sebagian data peminjaman (semua field opsional).
   "success": true,
   "message": "Peminjaman berhasil diperbarui",
   "data": {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "status": "Dikembalikan",
-    "tanggal_kembali_aktual": "2026-10-14",
-    "updated_at": "2026-10-14T09:15:00.000Z"
+    "id": "a833587f-9a22-470b-bcfc-1e4ebeaa7a39",
+    "anggota_id": "A003",
+    "nama_anggota": "Safira Zahra",
+    "buku_id": "B003",
+    "judul_buku": "Sang Pemimpi",
+    "tanggal_pinjam": "2026-09-01",
+    "tanggal_kembali_rencana": "2026-09-14",
+    "tanggal_kembali_aktual": null,
+    "status": "Terlambat",
+    "created_at": "2026-09-30T14:23:31.183355+00:00",
+    "updated_at": "2026-09-30T14:44:13.156398+00:00"
   }
 }
 ```
@@ -220,11 +310,16 @@ Perbarui sebagian data peminjaman (semua field opsional).
 ### DELETE /api/loans/:id
 Hapus data peminjaman berdasarkan ID.
 
+**Contoh Request:**
+```
+DELETE /api/loans/24ba42ec-6627-4e8c-a3ab-45d4bb66e89a
+```
+
 **Response (200 OK):**
 ```json
 {
   "success": true,
-  "message": "Peminjaman dengan id 550e8400-... berhasil dihapus"
+  "message": "Peminjaman dengan id 24ba42ec-6627-4e8c-a3ab-45d4bb66e89a berhasil dihapus"
 }
 ```
 
