@@ -1,12 +1,12 @@
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config({ override: true });
+
+// dotenv hanya untuk lokal - Vercel inject env vars otomatis
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ override: true });
+}
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('SUPABASE_URL dan SUPABASE_ANON_KEY harus diset di file .env');
-}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
