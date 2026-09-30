@@ -185,42 +185,6 @@ GET /api/loans?status=Terlambat
 
 ---
 
-### GET /api/loans/:id
-Ambil satu data peminjaman berdasarkan ID.
-
-**Contoh Request:**
-```
-GET /api/loans/a833587f-9a22-470b-bcfc-1e4ebeaa7a39
-```
-
-**Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Data peminjaman berhasil diambil",
-  "data": {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "anggota_id": "A001",
-    "buku_id": "B001",
-    "tanggal_pinjam": "2026-09-01",
-    "tanggal_kembali_rencana": "2026-09-14",
-    "tanggal_kembali_aktual": "2026-09-13",
-    "status": "Dikembalikan",
-    "created_at": "2026-09-01T07:00:00.000Z",
-    "updated_at": "2026-09-13T10:30:00.000Z"
-  }
-}
-```
-
-**Response (404 Not Found):**
-```json
-{
-  "success": false,
-  "message": "Peminjaman dengan id xxx tidak ditemukan"
-}
-```
-
----
 
 ### POST /api/loans
 Buat data peminjaman baru.
